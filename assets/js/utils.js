@@ -278,3 +278,23 @@ export const isLowPower = () => {
       return true;
     });
 };
+
+const storageKey = `throwurphone`;
+
+export const persistValue = (key, val) => {
+  localStorage.setItem([storageKey, key].join("-"), val);
+};
+
+export const getPersistedValue = (
+  key,
+  defaultVal = null,
+  transform = val => val
+) => {
+  if (typeof localStorage === "undefined") {
+    return defaultVal;
+  }
+
+  const val = localStorage.getItem([storageKey, key].join("-"));
+
+  return typeof val !== "undefined" ? transform(val) : defaultVal;
+};

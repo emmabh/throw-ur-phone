@@ -28,7 +28,12 @@
 <script>
 import Smiley from "~/assets/img/smiley.svg?inline";
 import Frowney from "~/assets/img/frowney.svg?inline";
-import { listenCb, tickUpdate } from "~/assets/js/utils";
+import {
+  listenCb,
+  tickUpdate,
+  persistValue,
+  getPersistedValue,
+} from "~/assets/js/utils";
 export default {
   components: { Smiley, Frowney },
   data: () => {
@@ -49,17 +54,25 @@ export default {
     this.checkIsMobile();
     this.startTime = new Date();
 
-    this.unlisten = [
-      listenCb(
-        document,
-        "touchstart",
-        tickUpdate((e) => {
-          if (this.isMobile && !this.hasPermissions && !this.permissionsError) {
-            this.askPermission();
-          }
-        })
-      ),
-    ];
+    if (getPersistedValue("hasPermissions")) {
+      this.hasPermissions = true;
+    } else {
+      this.unlisten = [
+        listenCb(
+          document,
+          "touchstart",
+          tickUpdate((e) => {
+            if (
+              this.isMobile &&
+              !this.hasPermissions &&
+              !this.permissionsError
+            ) {
+              this.askPermission();
+            }
+          })
+        ),
+      ];
+    }
   },
   beforeDestroy() {
     this.unlisten.forEach((cb) => cb());
@@ -172,6 +185,7 @@ export default {
                 listenCb(window, "devicemotion", tickUpdate(this.handleMotion))
               );
               this.hasPermissions = true;
+              persistValue("hasPermissions", true);
             }
           })
           .catch((this.permissionsError = true));
@@ -180,6 +194,7 @@ export default {
           listenCb(window, "devicemotion", tickUpdate(this.handleMotion))
         );
         this.hasPermissions = true;
+        persistValue("hasPermissions", true);
       }
     },
   },
