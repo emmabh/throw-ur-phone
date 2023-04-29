@@ -5,7 +5,9 @@
       <Frowney class="smiley top" v-else />
       <template v-if="isMobile">
         <p :class="{ fell }">
-          {{ !this.fell ? "THROW YOUR PHONE TO VIEW THIS SITE" : "OUCH." }}
+          {{
+            !this.fell ? "THROW YOUR PHONE TO VIEW THIS SITE" : phoneResponse
+          }}
         </p>
         <button
           class="permissions-button"
@@ -34,12 +36,15 @@
 <script>
 import Smiley from "~/assets/img/smiley.svg?inline";
 import Frowney from "~/assets/img/frowney.svg?inline";
-import {
-  listenCb,
-  tickUpdate,
-  persistValue,
-  getPersistedValue,
-} from "~/assets/js/utils";
+import { listenCb, tickUpdate } from "~/assets/js/utils";
+
+const PHONE_RESPONSES = [
+  "OUCH.",
+  "WHY DID YOU THROW ME?",
+  "THAT WASN'T NICE",
+  "YOU HURT ME",
+];
+
 export default {
   components: { Smiley, Frowney },
   data: () => {
@@ -54,6 +59,7 @@ export default {
       fell: false,
       hasPermissions: false,
       permissionsError: false,
+      phoneResponse: PHONE_RESPONSES[0],
     };
   },
   mounted() {
@@ -121,8 +127,8 @@ export default {
           this.isPlateauting &&
           now - this.startTime >= 300
         ) {
-          this.didFall = "I FELL";
           this.fell = true;
+          this.phoneResponse = this.selectRandomPhoneResponse();
           this.potentialFallStarted = false;
           this.isPlateauting = false;
           document.documentElement.style.setProperty(
@@ -158,6 +164,11 @@ export default {
       //   Math.floor(totalAcceleration) === 0) {
 
       //   }
+    },
+    selectRandomPhoneResponse() {
+      return PHONE_RESPONSES[
+        Math.floor(Math.random() * PHONE_RESPONSES.length)
+      ];
     },
     askPermission() {
       // feature detect
