@@ -188,7 +188,10 @@ export default {
               persistValue("hasPermissions", true);
             }
           })
-          .catch((this.permissionsError = true));
+          .catch((e) => {
+            this.permissionsError = true;
+            console.log(e);
+          });
       } else {
         this.unlisten.push(
           listenCb(window, "devicemotion", tickUpdate(this.handleMotion))
