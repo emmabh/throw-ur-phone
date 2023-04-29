@@ -99,9 +99,9 @@ export default {
       //   src:
       //     "https://cdnjs.cloudflare.com/ajax/libs/detectizr/2.2.0/detectizr.min.js"
       // },
-      {
-        src: `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`
-      },
+      // {
+      //   src: `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`
+      // },
       { src: "/js/snap.js" }
       // { src: "/js/recaptcha.js" } // Have to add key in file too
     ]
@@ -118,7 +118,6 @@ export default {
    ** Plugins to load before mounting the App
    */
   env: {
-    GA_ID,
     endpoint: process.env.LOCAL
       ? "http://localhost:3001/dev"
       : "https://amazonaws.com/dev",
@@ -135,12 +134,12 @@ export default {
     // { src: "~plugins/vue-carousel.js", ssr: false },
     { src: "~plugins/vue-resize.js", ssr: false }
   ],
-  facebook: {
-    /* module options */
-    track: "PageView",
-    pixelId: FB_PIXEL_ID,
-    disabled: false
-  },
+  // facebook: {
+  //   /* module options */
+  //   track: "PageView",
+  //   pixelId: FB_PIXEL_ID,
+  //   disabled: false
+  // },
   /*
    ** Nuxt.js dev-modules
    */
@@ -153,7 +152,7 @@ export default {
     "@nuxtjs/device",
     "@nuxtjs/axios",
     "@nuxtjs/style-resources",
-    "nuxt-facebook-pixel-module",
+    // "nuxt-facebook-pixel-module",
     "cookie-universal-nuxt",
     "@nuxtjs/markdownit"
   ],
