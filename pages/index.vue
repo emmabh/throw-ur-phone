@@ -7,12 +7,18 @@
         <p :class="{ fell }">
           {{ !this.fell ? "THROW YOUR PHONE TO VIEW THIS SITE" : "OUCH." }}
         </p>
-        <p v-if="!fell && !hasPermissions" class="permissions-text">
-          {{
-            this.permissionsError
-              ? "ERROR GETTING MOTION PERMISSIONS"
-              : "(TAP TO GIVE MOTION PERMISSIONS)"
-          }}
+        <button
+          class="permissions-button"
+          @click="askPermission"
+          v-if="!fell && !hasPermissions && !permissionsError"
+        >
+          TAP TO GIVE MOTION PERMISSIONS
+        </button>
+        <p
+          v-if="!fell && !hasPermissions && permissionsError"
+          class="permissions-text"
+        >
+          ERROR GETTING MOTION PERMISSIONS
         </p>
         <!-- <p>{{ this.didFall }}</p> -->
       </template>
@@ -53,26 +59,28 @@ export default {
   mounted() {
     this.checkIsMobile();
     this.startTime = new Date();
+    this.unlisten = [];
 
     if (getPersistedValue("hasPermissions")) {
       this.hasPermissions = true;
-    } else {
-      this.unlisten = [
-        listenCb(
-          document,
-          "touchstart",
-          tickUpdate((e) => {
-            if (
-              this.isMobile &&
-              !this.hasPermissions &&
-              !this.permissionsError
-            ) {
-              this.askPermission();
-            }
-          })
-        ),
-      ];
     }
+    // } else {
+    //   this.unlisten = [
+    //     listenCb(
+    //       document,
+    //       "touchstart",
+    //       tickUpdate((e) => {
+    //         if (
+    //           this.isMobile &&
+    //           !this.hasPermissions &&
+    //           !this.permissionsError
+    //         ) {
+    //           this.askPermission();
+    //         }
+    //       })
+    //     ),
+    //   ];
+    // }
   },
   beforeDestroy() {
     this.unlisten.forEach((cb) => cb());
@@ -217,7 +225,7 @@ p {
   position: relative;
   color: var(--color-white);
   text-align: center;
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 400;
 
   &.fell {
@@ -229,12 +237,24 @@ p {
   }
 }
 
-.permissions-text {
+.permissions-text,
+.permissions-button {
   font-size: 16px;
 
   @include tablet {
     font-size: 20px;
   }
+}
+
+.permissions-button {
+  position: relative;
+  display: block;
+  border: none;
+  background: none;
+  color: var(--color-white);
+  left: 50%;
+  transform: translate3d(-50%, 0, 0);
+  margin-bottom: 30px;
 }
 
 .text {
