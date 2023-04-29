@@ -60,27 +60,6 @@ export default {
     this.checkIsMobile();
     this.startTime = new Date();
     this.unlisten = [];
-
-    if (getPersistedValue("hasPermissions")) {
-      this.hasPermissions = true;
-    }
-    // } else {
-    //   this.unlisten = [
-    //     listenCb(
-    //       document,
-    //       "touchstart",
-    //       tickUpdate((e) => {
-    //         if (
-    //           this.isMobile &&
-    //           !this.hasPermissions &&
-    //           !this.permissionsError
-    //         ) {
-    //           this.askPermission();
-    //         }
-    //       })
-    //     ),
-    //   ];
-    // }
   },
   beforeDestroy() {
     this.unlisten.forEach((cb) => cb());
@@ -193,7 +172,6 @@ export default {
                 listenCb(window, "devicemotion", tickUpdate(this.handleMotion))
               );
               this.hasPermissions = true;
-              persistValue("hasPermissions", true);
             }
           })
           .catch((e) => {
@@ -205,7 +183,6 @@ export default {
           listenCb(window, "devicemotion", tickUpdate(this.handleMotion))
         );
         this.hasPermissions = true;
-        persistValue("hasPermissions", true);
       }
     },
   },
