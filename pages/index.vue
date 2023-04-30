@@ -99,12 +99,12 @@ export default {
           Math.pow(this.acceleration.z, 2)
       );
 
-      // this.didFall = `${this.acceleration.x} ${this.acceleration.y} ${this.acceleration.z} ${totalAcceleration}`;
-      // if (Math.floor(totalAcceleration) > 0) {
-      //   const statsDiv = document.createElement("div");
-      //   statsDiv.innerHTML = `${totalAcceleration}`;
-      //   this.$refs.content.appendChild(statsDiv);
-      // }
+      this.didFall = `${this.acceleration.x} ${this.acceleration.y} ${this.acceleration.z} ${totalAcceleration}`;
+      if (Math.floor(totalAcceleration) > 0) {
+        const statsDiv = document.createElement("div");
+        statsDiv.innerHTML = `${totalAcceleration}`;
+        this.$refs.content.appendChild(statsDiv);
+      }
 
       // TODO: DETECT ANOTHER KIND OF THROW - HARD THROW - GET HIGH ACCELLERATION FOLLOWED BY MOVEMENT OF ZERO IN THE NEXT TWO SECONDS
 
