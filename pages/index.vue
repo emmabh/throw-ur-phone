@@ -125,7 +125,7 @@ export default {
           totalAcceleration <= this.maxAcceleration &&
           totalAcceleration >= this.minAcceleration &&
           this.isPlateauting &&
-          now - this.startTime >= 300
+          now - this.startTime >= 200
         ) {
           this.fell = true;
           this.phoneResponse = this.selectRandomPhoneResponse();
