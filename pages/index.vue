@@ -52,6 +52,10 @@ export default {
       acceleration: { x: 0, y: 0, z: 0 },
       maxAcceleration: 10.5,
       minAcceleration: 8,
+      maxStoppedAcceleration: 1,
+      minStoppedAcceleration: 0,
+      stoppedTimeThreshold: 2000,
+      isPlateauingStopped: false,
       didFall: "",
       isMobile: false,
       isPlateauting: false,
@@ -121,10 +125,12 @@ export default {
         setTimeout(() => {
           this.potentialFallStarted = false;
           this.isPlateauting = false;
+          this.isPlateauingStopped = false;
         }, 2000);
       } else if (
         this.potentialFallStarted &&
-        Math.floor(totalAcceleration) > 0
+        Math.floor(totalAcceleration) > 0 &&
+        !this.fell
       ) {
         const now = new Date();
         if (
@@ -137,6 +143,7 @@ export default {
           this.phoneResponse = this.selectRandomPhoneResponse();
           this.potentialFallStarted = false;
           this.isPlateauting = false;
+          this.isPlateauingStopped = false;
           document.documentElement.style.setProperty(
             "--color-bg",
             "var(--color-white)"
@@ -164,6 +171,49 @@ export default {
           // this.$refs.content.appendChild(statsDiv);
         } else {
           this.isPlateauting = false;
+        }
+      } else if (this.potentialFallStarted) {
+        // NB: detecting hard stop
+        const now = new Date();
+        if (
+          totalAcceleration <= this.maxStoppedAcceleration &&
+          totalAcceleration >= this.minStoppedAcceleration &&
+          this.isPlateauingStopped &&
+          now - this.startTime >= this.stoppedTimeThreshold &&
+          !this.fell
+        ) {
+          this.fell = true;
+          this.phoneResponse = this.selectRandomPhoneResponse();
+          this.potentialFallStarted = false;
+          this.isPlateauting = false;
+          this.isPlateauingStopped = false;
+          document.documentElement.style.setProperty(
+            "--color-bg",
+            "var(--color-white)"
+          );
+          // const statsDiv = document.createElement("div");
+          // statsDiv.innerHTML = `FELL`;
+          // this.$refs.content.appendChild(statsDiv);
+        } else if (
+          totalAcceleration <= this.maxStoppedAcceleration &&
+          totalAcceleration >= this.minStoppedAcceleration &&
+          !this.isPlateauingStopped
+        ) {
+          this.startTime = now;
+          this.isPlateauingStopped = true;
+          // const statsDiv = document.createElement("div");
+          // statsDiv.innerHTML = `STARTING TO PLATEAU`;
+          // this.$refs.content.appendChild(statsDiv);
+        } else if (
+          totalAcceleration <= this.maxStoppedAcceleration &&
+          totalAcceleration >= this.minStoppedAcceleration &&
+          this.isPlateauingStopped
+        ) {
+          // const statsDiv = document.createElement("div");
+          // statsDiv.innerHTML = `PLATEAUING: ${now - this.startTime}`;
+          // this.$refs.content.appendChild(statsDiv);
+        } else {
+          this.isPlateauingStopped = false;
         }
       }
       // else if (this.potentialFallStarted &&
