@@ -100,9 +100,9 @@ export default {
       };
 
       const totalAcceleration = Math.sqrt(
-        Math.pow(this.accelerationWoGravity.x, 2) +
-          Math.pow(this.accelerationWoGravity.y, 2) +
-          Math.pow(this.accelerationWoGravity.z, 2)
+        Math.pow(this.acceleration.x, 2) +
+          Math.pow(this.acceleration.y, 2) +
+          Math.pow(this.acceleration.z, 2)
       );
 
       // this.didFall = `${this.acceleration.x} ${this.acceleration.y} ${this.acceleration.z} ${totalAcceleration}`;
