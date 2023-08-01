@@ -50,8 +50,8 @@ export default {
   data: () => {
     return {
       acceleration: { x: 0, y: 0, z: 0 },
-      maxAcceleration: 10.5,
-      minAcceleration: 8,
+      maxAcceleration: 1,
+      minAcceleration: 0,
       didFall: "",
       isMobile: false,
       isPlateauting: false,
@@ -108,7 +108,7 @@ export default {
       this.didFall = `${this.acceleration.x} ${this.acceleration.y} ${this.acceleration.z} ${totalAcceleration}`;
       if (Math.floor(totalAcceleration) > 0) {
         const statsDiv = document.createElement("div");
-        statsDiv.innerHTML = `${totalAcceleration} | ${this.potentialFallStarted} | ${this.isPlateauting}`;
+        statsDiv.innerHTML = `${totalAcceleration} | ${this.potentialFallStarted} | ${this.isPlateauting} | ${this.fell}`;
         this.$refs.content.appendChild(statsDiv);
       }
 
@@ -131,16 +131,16 @@ export default {
           totalAcceleration <= this.maxAcceleration &&
           totalAcceleration >= this.minAcceleration &&
           this.isPlateauting &&
-          now - this.startTime >= 100
+          now - this.startTime >= 200
         ) {
           this.fell = true;
           this.phoneResponse = this.selectRandomPhoneResponse();
           this.potentialFallStarted = false;
           this.isPlateauting = false;
-          document.documentElement.style.setProperty(
-            "--color-bg",
-            "var(--color-white)"
-          );
+          // document.documentElement.style.setProperty(
+          //   "--color-bg",
+          //   "var(--color-white)"
+          // );
           // const statsDiv = document.createElement("div");
           // statsDiv.innerHTML = `FELL`;
           // this.$refs.content.appendChild(statsDiv);
