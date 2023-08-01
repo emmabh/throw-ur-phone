@@ -69,6 +69,7 @@ export default {
   mounted() {
     this.checkIsMobile();
     this.startTime = new Date();
+    this.stopStartTime = new Date();
     this.unlisten = [];
   },
   beforeDestroy() {
@@ -126,7 +127,7 @@ export default {
           this.potentialFallStarted = false;
           this.isPlateauting = false;
           this.isPlateauingStopped = false;
-        }, 2000);
+        }, 6000);
       } else if (
         this.potentialFallStarted &&
         Math.floor(totalAcceleration) > 0 &&
@@ -172,15 +173,17 @@ export default {
         } else {
           this.isPlateauting = false;
         }
-      } else if (this.potentialFallStarted) {
+      } else if (
+        this.potentialFallStarted &&
+        !this.fell &&
+        totalAcceleration <= this.maxStoppedAcceleration &&
+        totalAcceleration >= this.minStoppedAcceleration
+      ) {
         // NB: detecting hard stop
         const now = new Date();
         if (
-          totalAcceleration <= this.maxStoppedAcceleration &&
-          totalAcceleration >= this.minStoppedAcceleration &&
           this.isPlateauingStopped &&
-          now - this.startTime >= this.stoppedTimeThreshold &&
-          !this.fell
+          now - this.stopStartTime >= this.stoppedTimeThreshold
         ) {
           this.fell = true;
           this.phoneResponse = this.selectRandomPhoneResponse();
@@ -194,21 +197,13 @@ export default {
           // const statsDiv = document.createElement("div");
           // statsDiv.innerHTML = `FELL`;
           // this.$refs.content.appendChild(statsDiv);
-        } else if (
-          totalAcceleration <= this.maxStoppedAcceleration &&
-          totalAcceleration >= this.minStoppedAcceleration &&
-          !this.isPlateauingStopped
-        ) {
-          this.startTime = now;
+        } else if (!this.isPlateauingStopped) {
+          this.stopStartTime = now;
           this.isPlateauingStopped = true;
           // const statsDiv = document.createElement("div");
           // statsDiv.innerHTML = `STARTING TO PLATEAU`;
           // this.$refs.content.appendChild(statsDiv);
-        } else if (
-          totalAcceleration <= this.maxStoppedAcceleration &&
-          totalAcceleration >= this.minStoppedAcceleration &&
-          this.isPlateauingStopped
-        ) {
+        } else if (this.isPlateauingStopped) {
           // const statsDiv = document.createElement("div");
           // statsDiv.innerHTML = `PLATEAUING: ${now - this.startTime}`;
           // this.$refs.content.appendChild(statsDiv);
