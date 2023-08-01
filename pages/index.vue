@@ -102,7 +102,7 @@ export default {
       this.didFall = `${this.acceleration.x} ${this.acceleration.y} ${this.acceleration.z} ${totalAcceleration}`;
       if (Math.floor(totalAcceleration) > 0) {
         const statsDiv = document.createElement("div");
-        statsDiv.innerHTML = `${totalAcceleration}`;
+        statsDiv.innerHTML = `${totalAcceleration} | ${this.potentialFallStarted} | ${this.isPlateauting}`;
         this.$refs.content.appendChild(statsDiv);
       }
 
