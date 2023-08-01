@@ -94,9 +94,9 @@ export default {
       };
 
       this.accelerationWoGravity = {
-        x: e.accelerationIncludingGravity,
-        y: e.accelerationIncludingGravity,
-        z: e.accelerationIncludingGravity,
+        x: e.accelerationIncludingGravity.x,
+        y: e.accelerationIncludingGravity.y,
+        z: e.accelerationIncludingGravity.z,
       };
 
       const totalAcceleration = Math.sqrt(
