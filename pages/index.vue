@@ -50,7 +50,7 @@ export default {
   data: () => {
     return {
       acceleration: { x: 0, y: 0, z: 0 },
-      maxAcceleration: 1,
+      maxAcceleration: 2,
       minAcceleration: 0,
       didFall: "",
       isMobile: false,
@@ -105,12 +105,12 @@ export default {
           Math.pow(this.accelerationWoGravity.z, 2)
       );
 
-      this.didFall = `${this.acceleration.x} ${this.acceleration.y} ${this.acceleration.z} ${totalAcceleration}`;
-      if (Math.floor(totalAcceleration) > 0) {
-        const statsDiv = document.createElement("div");
-        statsDiv.innerHTML = `${totalAcceleration} | ${this.potentialFallStarted} | ${this.isPlateauting} | ${this.fell}`;
-        this.$refs.content.appendChild(statsDiv);
-      }
+      // this.didFall = `${this.acceleration.x} ${this.acceleration.y} ${this.acceleration.z} ${totalAcceleration}`;
+      // if (Math.floor(totalAcceleration) > 0) {
+      //   const statsDiv = document.createElement("div");
+      //   statsDiv.innerHTML = `${totalAcceleration} | ${this.potentialFallStarted} | ${this.isPlateauting} | ${this.fell}`;
+      //   this.$refs.content.appendChild(statsDiv);
+      // }
 
       // TODO: DETECT ANOTHER KIND OF THROW - HARD THROW - GET HIGH ACCELLERATION FOLLOWED BY MOVEMENT OF ZERO IN THE NEXT TWO SECONDS
 
@@ -131,16 +131,16 @@ export default {
           totalAcceleration <= this.maxAcceleration &&
           totalAcceleration >= this.minAcceleration &&
           this.isPlateauting &&
-          now - this.startTime >= 200
+          now - this.startTime >= 100
         ) {
           this.fell = true;
           this.phoneResponse = this.selectRandomPhoneResponse();
           this.potentialFallStarted = false;
           this.isPlateauting = false;
-          // document.documentElement.style.setProperty(
-          //   "--color-bg",
-          //   "var(--color-white)"
-          // );
+          document.documentElement.style.setProperty(
+            "--color-bg",
+            "var(--color-white)"
+          );
           // const statsDiv = document.createElement("div");
           // statsDiv.innerHTML = `FELL`;
           // this.$refs.content.appendChild(statsDiv);
