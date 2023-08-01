@@ -2,7 +2,7 @@
   "name": "projectname",
   "version": "1.0.0",
   "description": "[PROJECT_NAME_DESCRIPTION]",
-  "author": "MSCHF",
+  "author": "ebhoward",
   "private": true,
   "scripts": {
     "dev": "nuxt",
