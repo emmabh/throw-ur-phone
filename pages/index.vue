@@ -52,7 +52,7 @@ export default {
       acceleration: { x: 0, y: 0, z: 0 },
       maxAcceleration: 10.5,
       minAcceleration: 8,
-      maxStoppedAcceleration: 1,
+      maxStoppedAcceleration: 0.5,
       minStoppedAcceleration: 0,
       stoppedTimeThreshold: 2000,
       isPlateauingStopped: false,
